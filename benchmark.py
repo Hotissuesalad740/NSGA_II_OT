@@ -14,7 +14,7 @@ Dùng từ dòng lệnh
 -----------------
     python benchmark.py                        # ZDT suite, cài đặt mặc định
     python benchmark.py --suite dtlz           # DTLZ suite
-    python benchmark.py --pop 200 --gen 200 --runs 20
+    python benchmark.py --pop 100 --gen 200 --runs 10
 """
 
 from __future__ import annotations
