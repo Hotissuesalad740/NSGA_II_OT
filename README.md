@@ -67,35 +67,35 @@ Improved NSGA-II được so sánh với các thuật toán tiên tiến:
 
 ### Kết quả trên bộ test ZDT
 
-| Bài toán | Đánh giá                   | Chi tiết                                                  |
-| -------- | -------------------------- | --------------------------------------------------------- |
-| **ZDT1** | ⭐⭐⭐⭐⭐ **Tốt hơn**     | IGD thấp hơn, HV cao hơn, hội tụ nhanh và ổn định         |
-| **ZDT2** | ⭐⭐⭐⭐ **Tốt (đa dạng)** | Ít ổn định hơn nhưng độ đa dạng vượt trội                 |
-| **ZDT3** | ⭐⭐⭐⭐ **Tốt (đa dạng)** | Ít ổn định hơn nhưng độ đa dạng vượt trội                 |
-| **ZDT4** | ⭐⭐⭐⭐⭐ **Tốt hơn**     | Hiệu quả cao trên bài toán nhiều local optima             |
-| **ZDT6** | ⭐⭐⭐⭐⭐ **Tốt hơn**     | Xử lý tốt Pareto front không đều, miền tìm kiếm phi tuyến |
+| Bài toán | Đánh giá                 | Chi tiết                                                  |
+| -------- | ------------------------ | --------------------------------------------------------- |
+| **ZDT1** | ⭐⭐⭐⭐⭐ **Tốt nhất**  | IGD thấp, HV cao, hội tụ nhanh và ổn định                 |
+| **ZDT2** | ⭐⭐⭐⭐⭐ **Tốt nhất**  | Cân bằng tốt giữa chất lượng hội tụ và độ đa dạng         |
+| **ZDT3** | ⭐⭐⭐⭐ **HV tốt nhất** | Nổi bật về độ phủ Pareto front theo chỉ số hypervolume    |
+| **ZDT4** | ⭐⭐⭐⭐⭐ **Tốt nhất**  | Hiệu quả cao trên bài toán nhiều local optima             |
+| **ZDT6** | ⭐⭐⭐⭐⭐ **Tốt nhất**  | Xử lý tốt Pareto front không đều, miền tìm kiếm phi tuyến |
 
 ### Chỉ số đánh giá
 
 - **IGD (Inverted Generational Distance)**: Đo khoảng cách trung bình từ Pareto front thực đến tập nghiệm
   - _Giá trị thấp hơn = tốt hơn_
-  - Improved NSGA-II đạt IGD thấp hơn trên ZDT1, ZDT4, ZDT6
+  - Improved NSGA-II cho kết quả mạnh nhất trên ZDT1, ZDT2, ZDT4 và ZDT6
 
 - **HV (Hypervolume)**: Đo thể tích vùng không gian được chi phối bởi tập nghiệm
   - _Giá trị cao hơn = tốt hơn_
-  - Improved NSGA-II đạt HV cao hơn trên tất cả các bài toán ZDT
+  - Improved NSGA-II đạt HV nổi bật trên toàn bộ bộ ZDT, đặc biệt tốt nhất trên ZDT3
 
 - **Độ ổn định**: Độ lệch chuẩn (std) qua nhiều lần chạy
-  - ZDT1, ZDT4, ZDT6: Rất ổn định
-  - ZDT2, ZDT3: Trade-off giữa ổn định và đa dạng (ưu tiên đa dạng)
+  - ZDT1, ZDT2, ZDT4, ZDT6: Ổn định và cho kết quả tốt nhất
+  - ZDT3: Nổi bật hơn ở tiêu chí HV
 
 ### Ưu điểm nổi bật
 
-- [x] **Chất lượng nghiệm cao**: IGD thấp, nghiệm gần Pareto front thực
-- [x] **Độ phủ tốt**: HV cao, phân bố đều trên toàn Pareto front
+- [x] **Chất lượng nghiệm cao**: Đạt kết quả tốt nhất trên ZDT1, ZDT2, ZDT4 và ZDT6
+- [x] **Độ phủ tốt**: HV rất cao, đặc biệt nổi bật trên ZDT3
 - [x] **Khả năng khám phá**: Xử lý tốt ZDT4 (nhiều local optima)
 - [x] **Thích ứng**: OBL và adaptive mutation giúp hội tụ nhanh
-- [x] **Đa dạng**: Ưu tiên diversity trên ZDT2, ZDT3 (Pareto front phức tạp)
+- [x] **Đa dạng**: Duy trì phân bố nghiệm tốt trên các Pareto front phức tạp
 
 ## Độ phức tạp thuật toán
 
