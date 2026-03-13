@@ -57,6 +57,14 @@ class ExperimentConfig:
         "zdt1": 30, "zdt2": 30, "zdt3": 30,
         "zdt4": 10, "zdt6": 10,
     })
+    # Ref-point theo cùng cấu hình notebook để so sánh HV nhất quán trên ZDT
+    ZDT_REF_POINTS: Dict[str, np.ndarray] = field(default_factory=lambda: {
+        "zdt1": np.array([1.0, 1.0]),
+        "zdt2": np.array([1.0, 1.0]),
+        "zdt3": np.array([0.789, 0.789]),
+        "zdt4": np.array([1.0, 1.0]),
+        "zdt6": np.array([1.04, 1.04]),
+    })
 
     # Bộ bài toán DTLZ
     DTLZ_PROBLEMS: List[str] = field(default_factory=lambda: [
@@ -96,6 +104,25 @@ def build_problem(
         n_obj      = pymoo_prob.n_obj
 
     return ProblemWrapper(pymoo_prob), n_var, n_obj
+
+
+def build_ref_point(
+    problem_name: str,
+    cfg: ExperimentConfig,
+    true_pf: Optional[np.ndarray],
+    final_front: np.ndarray,
+) -> np.ndarray:
+    """Lấy ref-point cho HV.
+
+    - Với ZDT: dùng mốc cố định như notebook để đảm bảo so sánh nhất quán.
+    - Với bài toán khác: fallback về 1.1 * max(PF thực hoặc PF tìm được).
+    """
+    name_lower = problem_name.lower()
+    if name_lower in cfg.ZDT_REF_POINTS:
+        return cfg.ZDT_REF_POINTS[name_lower]
+
+    base = np.max(true_pf, axis=0) if true_pf is not None else np.max(final_front, axis=0)
+    return base * 1.1
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -148,10 +175,7 @@ def run_single(
 
     # Chuẩn bị chỉ tiêu IGD và HV
     true_pf = pymoo_prob.pareto_front()
-    ref_pt  = (
-        np.max(true_pf, axis=0) if true_pf is not None
-        else np.max(final_front, axis=0)
-    ) * 1.1
+    ref_pt = build_ref_point(problem_name, cfg, true_pf, final_front)
 
     igd_fn = IGD(true_pf) if true_pf is not None else None
     hv_fn  = HV(ref_point=ref_pt)
@@ -161,9 +185,9 @@ def run_single(
     hv_history:  List[float] = []
 
     for gen_F in solver.history:
-        igd_history.append(float(igd_fn(gen_F)) if igd_fn is not None else 0.0)
+        igd_history.append(float(igd_fn.do(gen_F)) if igd_fn is not None else 0.0)
         try:
-            hv_history.append(float(hv_fn(gen_F)))
+            hv_history.append(float(hv_fn.do(gen_F)))
         except Exception:
             hv_history.append(0.0)
 
