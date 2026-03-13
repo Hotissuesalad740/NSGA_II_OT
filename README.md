@@ -229,19 +229,23 @@ print(f"Giá trị mục tiêu:\n{pareto_front}")
 
 1. **Deb, K., et al. (2002)**  
    _"A fast and elitist multiobjective genetic algorithm: NSGA-II"_  
-   IEEE Transactions on Evolutionary Computation, 6(2), 182-197.
+   IEEE Transactions on Evolutionary Computation, 6(2), 182-197.  
+   Link: https://doi.org/10.1109/4235.996017
 
 2. **Tizhoosh, H. R. (2005)**  
    _"Opposition-based learning: A new scheme for machine intelligence"_  
-   International Conference on Computational Intelligence for Modelling, Control and Automation.
+   International Conference on Computational Intelligence for Modelling, Control and Automation.  
+   Link: https://ieeexplore.ieee.org/abstract/document/1631345/
 
 3. **Deb, K., & Agrawal, R. B. (1995)**  
    _"Simulated binary crossover for continuous search space"_  
-   Complex Systems, 9(2), 115-148.
+   Complex Systems, 9(2), 115-148.  
+   Link: https://www.complex-systems.com/abstracts/v09_i02_a02/
 
 4. **Zitzler, E., et al. (2000)**  
    _"Comparison of multiobjective evolutionary algorithms: Empirical results"_  
-   Evolutionary Computation, 8(2), 173-195.
+   Evolutionary Computation, 8(2), 173-195.  
+   Link: https://doi.org/10.1162/106365600568202
 
 ## License
 
