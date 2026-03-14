@@ -1,231 +1,233 @@
 # Improved NSGA-II
 
-Cài đặt cải tiến của thuật toán NSGA-II (Non-dominated Sorting Genetic Algorithm II) với các kỹ thuật tối ưu hóa hiện đại để giải quyết bài toán tối ưu hóa đa mục tiêu.
+An improved implementation of NSGA-II (Non-dominated Sorting Genetic Algorithm II) with modern optimization techniques for solving multi-objective optimization problems.
 
-## Mục lục
+> Vietnamese translation: see [README.vi.md](README.vi.md).
 
-- [Tổng quan](#tổng-quan)
-- [Các cải tiến chính](#các-cải-tiến-chính)
-- [Kết quả thực nghiệm](#kết-quả-thực-nghiệm)
-- [Độ phức tạp thuật toán](#độ-phức-tạp-thuật-toán)
-- [Cài đặt](#cài-đặt)
-- [Sử dụng](#sử-dụng)
-- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
+## Table of Contents
 
-## Tổng quan
+- [Overview](#overview)
+- [Key Improvements](#key-improvements)
+- [Experimental Results](#experimental-results)
+- [Algorithm Complexity](#algorithm-complexity)
+- [Installation](#installation)
+- [Usage](#usage)
+- [References](#references)
 
-Improved NSGA-II là phiên bản cải tiến của thuật toán NSGA-II cổ điển, được thiết kế để cải thiện:
+## Overview
 
-- **Chất lượng nghiệm**: Khả năng hội tụ về Pareto front thực
-- **Độ đa dạng**: Phân bố đều các nghiệm trên Pareto front
-- **Hiệu suất**: Tốc độ hội tụ nhanh hơn với ít thế hệ hơn
-- **Khả năng khám phá**: Tránh rơi vào tối ưu cục bộ
+Improved NSGA-II is an enhanced version of the classic NSGA-II algorithm, designed to improve:
 
-## Các cải tiến chính
+- **Solution quality**: Better convergence toward the true Pareto front
+- **Diversity**: More uniform distribution of solutions on the Pareto front
+- **Performance**: Faster convergence with fewer generations
+- **Exploration ability**: Reduced risk of getting trapped in local optima
+
+## Key Improvements
 
 ### 1. Opposition-Based Learning (OBL)
 
-- **Mục đích**: Cải thiện chất lượng quần thể khởi tạo
-- **Cách thức**: Với mỗi cá thể ngẫu nhiên `x`, tạo thêm cá thể đối ngược `x_opp = lb + ub - x`
-- **Lợi ích**: Tăng khả năng khám phá không gian tìm kiếm ngay từ đầu, giảm số thế hệ cần thiết để hội tụ
+- **Purpose**: Improve initial population quality
+- **Method**: For each random individual `x`, generate an opposite individual `x_opp = lb + ub - x`
+- **Benefit**: Increases search-space exploration from the start and reduces required generations to converge
 
 ### 2. Adaptive Mutation Probability
 
-- **Công thức**: `pm(t) = pm_max - (pm_max - pm_min) × (t / T)`
-- **pm_max**: 0.3 (thế hệ đầu - khám phá mạnh)
-- **pm_min**: 0.05 (thế hệ cuối - khai thác)
-- **Lợi ích**: Cân bằng giữa khám phá (exploration) và khai thác (exploitation) theo thời gian
+- **Formula**: `pm(t) = pm_max - (pm_max - pm_min) × (t / T)`
+- **pm_max**: 0.3 (early generations - stronger exploration)
+- **pm_min**: 0.05 (late generations - stronger exploitation)
+- **Benefit**: Balances exploration and exploitation over time
 
 ### 3. Simulated Binary Crossover (SBX)
 
-- **Tham số**: `eta_c = 20` (distribution index)
-- **Đặc điểm**: Con cái thường gần với cha mẹ hơn, phù hợp cho tối ưu hóa liên tục
-- **Lợi ích**: Tạo ra các biến thể chất lượng cao từ các nghiệm tốt
+- **Parameter**: `eta_c = 20` (distribution index)
+- **Characteristic**: Offspring tend to stay close to parents, suitable for continuous optimization
+- **Benefit**: Produces high-quality variants from good solutions
 
 ### 4. Polynomial Mutation
 
-- **Tham số**: `eta_m = 20` (distribution index)
-- **Đặc điểm**: Độ lớn đột biến giảm dần khi tiến gần đến nghiệm tối ưu
-- **Lợi ích**: Tinh chỉnh nghiệm hiệu quả ở giai đoạn sau
+- **Parameter**: `eta_m = 20` (distribution index)
+- **Characteristic**: Mutation magnitude gradually decreases near optimal solutions
+- **Benefit**: Effective fine-tuning in later stages
 
 ### 5. Tournament Selection
 
-- **Kích thước giải đấu**: 2
-- **Tiêu chí**: Ưu tiên rank thấp hơn → crowding distance lớn hơn
-- **Lợi ích**: Duy trì áp lực chọn lọc vừa phải, bảo toàn đa dạng
+- **Tournament size**: 2
+- **Criterion**: Prefer lower rank, then larger crowding distance
+- **Benefit**: Maintains moderate selection pressure while preserving diversity
 
-## Kết quả thực nghiệm
+## Experimental Results
 
-### So sánh với các thuật toán khác
+### Comparison with Other Algorithms
 
-Improved NSGA-II được so sánh với các thuật toán tiên tiến:
+Improved NSGA-II is compared with the following advanced algorithms:
 
-- **NSGA-II**: Phiên bản chuẩn gốc (Deb et al., 2002)
+- **NSGA-II**: Original baseline version (Deb et al., 2002)
 - **RNSGA-II**: Reference-point based NSGA-II
 - **DNSGA-II**: Dynamic NSGA-II
 - **MOPSO-CD**: Multi-Objective Particle Swarm Optimization with Crowding Distance
 
-### Kết quả trên bộ test ZDT
+### Results on the ZDT Benchmark Suite
 
-| Bài toán | Đánh giá                 | Chi tiết                                                  |
-| -------- | ------------------------ | --------------------------------------------------------- |
-| **ZDT1** | ⭐⭐⭐⭐⭐ **Tốt nhất**  | IGD thấp, HV cao, hội tụ nhanh và ổn định                 |
-| **ZDT2** | ⭐⭐⭐⭐⭐ **Tốt nhất**  | Cân bằng tốt giữa chất lượng hội tụ và độ đa dạng         |
-| **ZDT3** | ⭐⭐⭐⭐ **HV tốt nhất** | Nổi bật về độ phủ Pareto front theo chỉ số hypervolume    |
-| **ZDT4** | ⭐⭐⭐⭐⭐ **Tốt nhất**  | Hiệu quả cao trên bài toán nhiều local optima             |
-| **ZDT6** | ⭐⭐⭐⭐⭐ **Tốt nhất**  | Xử lý tốt Pareto front không đều, miền tìm kiếm phi tuyến |
+| Problem   | Rating                      | Details                                                       |
+| --------- | --------------------------- | ------------------------------------------------------------- |
+| **ZDT1**  | ⭐⭐⭐⭐⭐ **Best overall**    | Low IGD, high HV, fast and stable convergence                |
+| **ZDT2**  | ⭐⭐⭐⭐⭐ **Best overall**    | Strong balance between convergence quality and diversity      |
+| **ZDT3**  | ⭐⭐⭐⭐ **Best HV**          | Outstanding Pareto-front coverage in terms of hypervolume    |
+| **ZDT4**  | ⭐⭐⭐⭐⭐ **Best overall**    | High effectiveness on many-local-optima landscapes           |
+| **ZDT6**  | ⭐⭐⭐⭐⭐ **Best overall**    | Handles uneven Pareto fronts and nonlinear search spaces well |
 
-### Chỉ số đánh giá
+### Evaluation Metrics
 
-- **IGD (Inverted Generational Distance)**: Đo khoảng cách trung bình từ Pareto front thực đến tập nghiệm
-  - _Giá trị thấp hơn = tốt hơn_
-  - Improved NSGA-II cho kết quả mạnh nhất trên ZDT1, ZDT2, ZDT4 và ZDT6
+- **IGD (Inverted Generational Distance)**: Average distance from the true Pareto front to the approximated set
+  - _Lower is better_
+  - Improved NSGA-II gives the strongest results on ZDT1, ZDT2, ZDT4, and ZDT6
 
-- **HV (Hypervolume)**: Đo thể tích vùng không gian được chi phối bởi tập nghiệm
-  - _Giá trị cao hơn = tốt hơn_
-  - Improved NSGA-II đạt HV nổi bật trên toàn bộ bộ ZDT, đặc biệt tốt nhất trên ZDT3
+- **HV (Hypervolume)**: Volume of objective space dominated by the solution set
+  - _Higher is better_
+  - Improved NSGA-II achieves strong HV across the full ZDT suite, and is best on ZDT3
 
-- **Độ ổn định**: Độ lệch chuẩn (std) qua nhiều lần chạy
-  - ZDT1, ZDT2, ZDT4, ZDT6: Ổn định và cho kết quả tốt nhất
-  - ZDT3: Nổi bật hơn ở tiêu chí HV
+- **Stability**: Standard deviation across multiple runs
+  - ZDT1, ZDT2, ZDT4, ZDT6: Most stable with best overall results
+  - ZDT3: Particularly strong in HV
 
-### Ưu điểm nổi bật
+### Main Strengths
 
-- [x] **Chất lượng nghiệm cao**: Đạt kết quả tốt nhất trên ZDT1, ZDT2, ZDT4 và ZDT6
-- [x] **Độ phủ tốt**: HV rất cao, đặc biệt nổi bật trên ZDT3
-- [x] **Khả năng khám phá**: Xử lý tốt ZDT4 (nhiều local optima)
-- [x] **Thích ứng**: OBL và adaptive mutation giúp hội tụ nhanh
-- [x] **Đa dạng**: Duy trì phân bố nghiệm tốt trên các Pareto front phức tạp
+- [x] **High solution quality**: Best results on ZDT1, ZDT2, ZDT4, and ZDT6
+- [x] **Excellent coverage**: Very high HV, especially on ZDT3
+- [x] **Strong exploration**: Performs well on ZDT4 (many local optima)
+- [x] **Adaptivity**: OBL and adaptive mutation accelerate convergence
+- [x] **Diversity preservation**: Maintains good spread on complex Pareto fronts
 
-## Độ phức tạp thuật toán
+## Algorithm Complexity
 
-### Độ phức tạp thời gian
+### Time Complexity
 
-Cho quần thể kích thước $N$, số mục tiêu $M$:
+Given population size $N$ and number of objectives $M$:
 
-| Thành phần             | Độ phức tạp           | Giải thích                               |
-| ---------------------- | --------------------- | ---------------------------------------- |
-| **Khởi tạo OBL**       | $O(N \cdot n_{var})$  | Tạo $N$ cá thể và $N$ cá thể đối ngược   |
-| **Non-dominated Sort** | $O(M \cdot N^2)$      | Thuật toán Fast Non-dominated Sort (Deb) |
-| **Crowding Distance**  | $O(M \cdot N \log N)$ | Sắp xếp theo từng mục tiêu               |
-| **Selection**          | $O(N)$                | Tournament selection                     |
-| **Crossover**          | $O(N \cdot n_{var})$  | SBX cho từng cặp cha mẹ                  |
-| **Mutation**           | $O(N \cdot n_{var})$  | Polynomial mutation                      |
-| **Đánh giá**           | $O(N \cdot T_{eval})$ | $T_{eval}$ = thời gian đánh giá 1 cá thể |
+| Component              | Complexity              | Explanation                                      |
+| ---------------------- | ----------------------- | ------------------------------------------------ |
+| **OBL Initialization** | $O(N \cdot n_{var})$    | Generate $N$ individuals and $N$ opposite ones   |
+| **Non-dominated Sort** | $O(M \cdot N^2)$        | Fast Non-dominated Sort algorithm (Deb)          |
+| **Crowding Distance**  | $O(M \cdot N \log N)$  | Sort by each objective                           |
+| **Selection**          | $O(N)$                  | Tournament selection                             |
+| **Crossover**          | $O(N \cdot n_{var})$    | SBX for each parent pair                         |
+| **Mutation**           | $O(N \cdot n_{var})$    | Polynomial mutation                              |
+| **Evaluation**         | $O(N \cdot T_{eval})$   | $T_{eval}$ = evaluation time per individual      |
 
-**Tổng mỗi thế hệ**: $O(M \cdot N^2 + N \cdot n_{var} + N \cdot T_{eval})$
+**Total per generation**: $O(M \cdot N^2 + N \cdot n_{var} + N \cdot T_{eval})$
 
-Trong thực tế:
+In practice:
 
-- Nếu $T_{eval}$ nhỏ (hàm đơn giản): Chi phí chính là **Non-dominated Sort** $O(M \cdot N^2)$
-- Nếu $T_{eval}$ lớn (mô phỏng phức tạp): Chi phí chính là **Đánh giá** $O(N \cdot T_{eval})$
+- If $T_{eval}$ is small (simple objective functions): dominant cost is **Non-dominated Sort** $O(M \cdot N^2)$
+- If $T_{eval}$ is large (complex simulations): dominant cost is **Evaluation** $O(N \cdot T_{eval})$
 
-### Độ phức tạp không gian
+### Space Complexity
 
 $O(N \cdot (n_{var} + M))$
 
-- Lưu trữ quần thể: $N$ cá thể
-- Mỗi cá thể: $n_{var}$ biến quyết định + $M$ giá trị mục tiêu
+- Population storage: $N$ individuals
+- Each individual: $n_{var}$ decision variables + $M$ objective values
 - Metadata: rank, crowding distance
 
-### So sánh với NSGA-II gốc
+### Comparison with Original NSGA-II
 
-| Thuật toán           | Thời gian/thế hệ | Không gian     | Ghi chú                |
-| -------------------- | ---------------- | -------------- | ---------------------- |
-| NSGA-II              | $O(M \cdot N^2)$ | $O(N \cdot M)$ | Baseline               |
-| **Improved NSGA-II** | $O(M \cdot N^2)$ | $O(N \cdot M)$ | Không tăng độ phức tạp |
+| Algorithm              | Time / Generation | Space          | Notes                  |
+| ---------------------- | ----------------- | -------------- | ---------------------- |
+| NSGA-II                | $O(M \cdot N^2)$  | $O(N \cdot M)$ | Baseline               |
+| **Improved NSGA-II**   | $O(M \cdot N^2)$  | $O(N \cdot M)$ | No asymptotic increase |
 
-**Kết luận**: Các cải tiến (OBL, adaptive mutation) không làm tăng độ phức tạp tiệm cận, chỉ thêm hằng số nhỏ.
+**Conclusion**: The improvements (OBL, adaptive mutation) do not increase asymptotic complexity, only small constant overhead.
 
-## Cài đặt
+## Installation
 
-### Yêu cầu hệ thống
+### System Requirements
 
 - Python 3.8+
-- pip hoặc conda
+- pip or conda
 
-### Cài đặt thư viện
+### Install Dependencies
 
 ```bash
-# Clone repository (nếu có)
+# Clone repository (if available)
 git clone <repository-url>
 cd source_code
 
-# Cài đặt các thư viện cần thiết
+# Install required dependencies
 pip install -r requirements.txt
 ```
 
-### Các thư viện chính
+### Main Libraries
 
-- `numpy`: Tính toán số học và mảng
-- `pandas`: Xử lý và xuất kết quả
-- `matplotlib`: Vẽ đồ thị
-- `seaborn`: Trực quan hóa nâng cao
-- `pymoo`: Framework tối ưu hóa đa mục tiêu (cung cấp bộ test ZDT/DTLZ)
-- `tabulate`: Hiển thị bảng đẹp trên console
+- `numpy`: Numerical computing and arrays
+- `pandas`: Data processing and result export
+- `matplotlib`: Plotting
+- `seaborn`: Advanced visualization
+- `pymoo`: Multi-objective optimization framework (provides ZDT/DTLZ benchmark suites)
+- `tabulate`: Pretty console tables
 
-## Sử dụng
+## Usage
 
 ```bash
-# Chạy với quần thể 100, 200 thế hệ, 10 lần lặp
+# Run with population 100, 200 generations, 10 runs
 python benchmark.py --pop 100 --gen 200 --runs 10
 
-# Chạy với quần thể lớn hơn và nhiều thế hệ hơn
+# Run with larger population and more generations
 python benchmark.py --pop 200 --gen 300 --runs 20
 
-# Chạy bộ test DTLZ (3 mục tiêu)
+# Run DTLZ benchmark suite (3 objectives)
 python benchmark.py --suite dtlz --pop 150 --gen 250
 ```
 
-### Các tham số dòng lệnh
+### Command-Line Arguments
 
-| Tham số   | Mặc định | Mô tả                                    |
-| --------- | -------- | ---------------------------------------- |
-| `--suite` | `zdt`    | Bộ bài toán: `zdt` hoặc `dtlz`           |
-| `--pop`   | `100`    | Kích thước quần thể                      |
-| `--gen`   | `200`    | Số thế hệ tối đa                         |
-| `--runs`  | `10`     | Số lần chạy lặp lại (để tính mean ± std) |
-| `--seed`  | `42`     | Seed ngẫu nhiên gốc                      |
+| Argument  | Default | Description                                 |
+| --------- | ------- | ------------------------------------------- |
+| `--suite` | `zdt`   | Benchmark suite: `zdt` or `dtlz`            |
+| `--pop`   | `100`   | Population size                             |
+| `--gen`   | `200`   | Maximum number of generations               |
+| `--runs`  | `10`    | Number of repeated runs (for mean ± std)    |
+| `--seed`  | `42`    | Base random seed                            |
 
-### Kết quả đầu ra
+### Output
 
-Sau khi chạy xong, bạn sẽ nhận được:
+After execution, you will get:
 
-1. **Đồ thị hội tụ**: IGD, HV theo thế hệ + Pareto front 2D/3D
-   - Hiển thị True Pareto Front (đường đen)
-   - Hiển thị NSGA-II Front (chấm đỏ rỗng)
+1. **Convergence plots**: IGD, HV over generations + 2D/3D Pareto front
+   - Displays the true Pareto front (black curve)
+   - Displays NSGA-II front (hollow red markers)
 
-2. **Biểu đồ boxplot**: Phân phối IGD, HV qua tất cả bài toán
+2. **Boxplots**: IGD and HV distributions across all problems
 
-3. **Bảng tổng hợp** (console): Mean ± std của IGD, HV, Time
+3. **Summary table** (console): Mean ± std for IGD, HV, and time
 
-4. **File CSV**:
-   - `benchmark_raw.csv`: Dữ liệu thô từng lần chạy
-   - `benchmark_summary.csv`: Kết quả tổng hợp (mean, std)
+4. **CSV files**:
+   - `benchmark_raw.csv`: Raw data for each run
+   - `benchmark_summary.csv`: Aggregated results (mean, std)
 
-### Sử dụng trong code Python
+### Use in Python Code
 
 ```python
 from nsga2_improved import NSGA2ImprovedSmart, ProblemWrapper
 from pymoo.problems import get_problem
 import numpy as np
 
-# Tạo bài toán
+# Define the problem
 problem = get_problem("zdt1", n_var=30)
 wrapper = ProblemWrapper(problem)
 
-# Khởi tạo thuật toán
+# Initialize the algorithm
 solver = NSGA2ImprovedSmart(wrapper, pop_size=100, n_gen=200)
 
-# Chạy thuật toán
+# Run the algorithm
 pareto_front = solver.run()
 
-# Kết quả
-print(f"Số nghiệm Pareto: {len(pareto_front)}")
-print(f"Giá trị mục tiêu:\n{pareto_front}")
+# Results
+print(f"Number of Pareto solutions: {len(pareto_front)}")
+print(f"Objective values:\n{pareto_front}")
 ```
 
-## Tài liệu tham khảo
+## References
 
 1. **Deb, K., et al. (2002)**  
    _"A fast and elitist multiobjective genetic algorithm: NSGA-II"_  
@@ -269,12 +271,12 @@ print(f"Giá trị mục tiêu:\n{pareto_front}")
 
 ## License
 
-MIT License - Tự do sử dụng cho mục đích nghiên cứu và thương mại.
+MIT License - Free to use for research and commercial purposes.
 
-## Liên hệ
+## Contact
 
-Nếu có câu hỏi hoặc vấn đề, vui lòng tạo Issue trên GitHub.
+If you have questions or issues, please open an Issue on GitHub.
 
 ---
 
-**Improved NSGA-II** - Tối ưu hóa đa mục tiêu hiệu quả cho thế kỷ 21 🚀
+**Improved NSGA-II** - Effective multi-objective optimization for the 21st century.
